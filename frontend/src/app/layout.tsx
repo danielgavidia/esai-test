@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import GlobalLayout from "./x-layouts/general.layout";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning className={`antialiased`}>
-        {children}
+        <GlobalLayout>{children}</GlobalLayout>
       </body>
     </html>
   );
