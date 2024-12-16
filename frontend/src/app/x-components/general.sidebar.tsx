@@ -1,3 +1,5 @@
+"use client";
+
 import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
@@ -5,13 +7,16 @@ import {
   // SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  // SidebarGroupLabel,
   SidebarHeader,
-  SidebarMenu,
+  // SidebarMenu,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
+import { useRouter } from "next/navigation";
 
 const GlobalSidebar = () => {
+  const router = useRouter();
+
   return (
     <Sidebar>
       {/* Logo header */}
@@ -19,14 +24,24 @@ const GlobalSidebar = () => {
 
       {/* Sidebar Content */}
       <SidebarContent>
+        {/* All ESAI Tools */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenuButton>All ESAI Tools</SidebarMenuButton>
+            <SidebarMenuButton onClick={() => router.push("/")}>All ESAI Tools</SidebarMenuButton>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* History */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenuButton>History</SidebarMenuButton>
+            <SidebarMenuButton onClick={() => router.push("/history")}>History</SidebarMenuButton>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Cards */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenuButton onClick={() => router.push("/cards")}>Cards</SidebarMenuButton>
           </SidebarGroupContent>
         </SidebarGroup>
         <Separator />
