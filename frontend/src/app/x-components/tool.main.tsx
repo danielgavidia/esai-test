@@ -4,17 +4,24 @@ import { QuestionBlock, Tool } from "@/types/types";
 import { useState } from "react";
 import QuestionBlockCard from "./tool.question-block";
 import { apiGetAIResponse } from "@/api/api.ai";
+import OutputCard from "./tool.output-card";
 
 export interface ToolMainProps {
   tool: Tool;
 }
 
 const ToolMain = ({ tool }: ToolMainProps) => {
+  // State
   const [questionBlocks, setQuestionBlocks] = useState<QuestionBlock[]>(tool.questionBlocks);
   const [step, setStep] = useState<number>(0);
   const [textError, setTextError] = useState<boolean>(false);
   const [ratingError, setRatingError] = useState<boolean>(false);
+  const [aiOutputBlocks, setAIOutputBlocks] = useState<
+    { content: string; saved: boolean }[] | null
+  >(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
+  // Mappings
   const stepMapping: Record<string, number[]> = {
     "0": [],
     "1": [0, 1],
@@ -31,6 +38,7 @@ const ToolMain = ({ tool }: ToolMainProps) => {
     "4": "Submit",
   };
 
+  // Handle next
   const handleNext = () => {
     setTextError(false);
     setRatingError(false);
@@ -54,9 +62,10 @@ const ToolMain = ({ tool }: ToolMainProps) => {
     setStep((prev) => prev + 1);
   };
 
+  // Handle submit
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log("started");
     e.preventDefault();
+    setLoading(true);
     setTextError(false);
     setRatingError(false);
 
@@ -66,18 +75,21 @@ const ToolMain = ({ tool }: ToolMainProps) => {
 
     if (currentAnswers.includes("")) {
       setTextError(true);
+      setLoading(false);
       return;
     }
 
     if (currentRatings.includes(0)) {
       setRatingError(true);
+      setLoading(false);
       return;
     }
     setTextError(false);
     setRatingError(false);
 
-    const res = await apiGetAIResponse(questionBlocks);
-    console.log(res);
+    const res: string[] = await apiGetAIResponse(questionBlocks);
+    setLoading(false);
+    setAIOutputBlocks(res.map((output) => ({ content: output, saved: false })));
   };
 
   console.log(questionBlocks);
@@ -103,8 +115,9 @@ const ToolMain = ({ tool }: ToolMainProps) => {
       {step > 0 && <p className="text-xs">Step {step} of 4</p>}
 
       {/* Question blocks */}
-      {step > 0 && (
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 items-center">
+
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4 items-center">
+        {step > 0 && (
           <div className="flex flex-col space-y-6 p-3 rounded-2xl border-[1px]">
             {questionBlocks.map((block, i) => {
               if (stepMapping[step.toString()].includes(i)) {
@@ -127,28 +140,46 @@ const ToolMain = ({ tool }: ToolMainProps) => {
               }
               return null;
             })}
-            {textError && <p className="text-red-500 text-sm">Please provide answers</p>}
-            {ratingError && <p className="text-red-500 text-sm">Please provide ratings</p>}
           </div>
+        )}
 
-          {/* Submit button */}
-          {step !== 4 ? (
-            <button
-              type="button"
-              onClick={() => handleNext()}
-              className="bg-yellow-200 w-24 text-center p-2 rounded-3xl border-2"
-            >
-              {stepMappingSubmit[step.toString()]}
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="bg-yellow-200 w-24 text-center p-2 rounded-3xl border-2"
-            >
-              {stepMappingSubmit[step.toString()]}
-            </button>
-          )}
-        </form>
+        {textError && <p className="text-red-500 text-sm">Please provide answers</p>}
+        {ratingError && <p className="text-red-500 text-sm">Please provide ratings</p>}
+
+        {/* Submit button */}
+        {step !== 4 ? (
+          <button
+            type="button"
+            onClick={() => handleNext()}
+            className="bg-yellow-200 w-24 text-center p-2 rounded-3xl border-2"
+          >
+            {stepMappingSubmit[step.toString()]}
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="bg-yellow-200 w-24 text-center p-2 rounded-3xl border-2"
+          >
+            {stepMappingSubmit[step.toString()]}
+          </button>
+        )}
+      </form>
+
+      {/* AI output blocks */}
+      {loading && <div className="font-semibold text-lg">Supercharging your story...</div>}
+      {aiOutputBlocks && (
+        <div className="flex flex-col space-y-2 bg-gray-100 p-2 rounded-lg">
+          <p className="text-sm font-semibold">
+            Based on your unique story, here are some suggested angles for how you could stand out
+            and get in:
+          </p>
+          <div className="flex flex-col space-y-2">
+            {aiOutputBlocks.map((block, i) => (
+              <OutputCard key={i} content={block.content} saved={block.saved} />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
