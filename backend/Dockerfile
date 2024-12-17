@@ -25,5 +25,8 @@ COPY . ./
 # Generate prisma client
 RUN npx prisma generate
 
+# Run migrations
+RUN npx prisma migrate deploy
+
 # Run the prisma migrations and application
-CMD ["npx", "prisma", "migrate", "deploy", "&&", "bun", "run", "--watch", "index.ts"]
+CMD ["bun", "run", "--watch", "index.ts"]
