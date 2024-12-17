@@ -11,6 +11,7 @@ export interface OutputCardProps {
 
 const OutputCard = ({ content, saved, toolType }: OutputCardProps) => {
   const handleSave = async () => {
+    console.log("started");
     const res = await apiPostCard(content, toolType);
     console.log(res);
   };
