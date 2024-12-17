@@ -1,3 +1,5 @@
+"use client";
+
 import { QuestionBlock } from "@/types/types";
 import { useState } from "react";
 
@@ -22,7 +24,7 @@ const QuestionBlockCard = ({ questionBlock, setRating, setAnswer }: QuestionBloc
       <textarea
         value={questionBlock.answer}
         placeholder={questionBlock.placeholder}
-        className="border-[1px] rounded-xl text-xs w-full p-2"
+        className="border-[1px] rounded-xl text-xs w-full p-2 resize-none"
         onChange={(e) => setAnswer(e.target.value)}
       />
 
