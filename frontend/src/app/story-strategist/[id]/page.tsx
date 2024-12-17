@@ -11,13 +11,32 @@ const Page = () => {
   const { conversations } = useConversations();
   const conversation = conversations ? conversations.find((conv) => conv.id === id) : null;
 
-  return (
-    <div>
-      {conversation && (
-        <div>
-          {conversation.id}
+  if (conversation) {
+    console.log(conversation);
+  }
 
-          <div>
+  return (
+    <div className="p-6 flex flex-col space-y-4 flex flex-col items-center justify-center">
+      {conversation && (
+        <div className="max-w-[54rem]">
+          <div className="flex flex-col justify-center items-center space-y-2">
+            <p className="font-bold text-lg">
+              {conversation.type
+                .split("-")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
+            </p>
+            <p className="text-gray-500 text-xs">
+              {new Date(conversation.createdAt).toLocaleString([], {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </p>
+          </div>
+          <div className="flex flex-col space-y-4">
             {conversation.questionBlocks.map((block, i) => (
               <QuestionBlockNonInput key={i} questionBlock={block} />
             ))}
