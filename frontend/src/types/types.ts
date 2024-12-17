@@ -1,4 +1,5 @@
 export interface Tool {
+  type: "story-strategist" | "school-match-maker";
   title: string;
   tags: string[];
   description: string;

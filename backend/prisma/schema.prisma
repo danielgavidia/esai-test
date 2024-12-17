@@ -13,7 +13,6 @@ model Card {
   createdAt DateTime @default(now())
 
   // Fields
-  title   String @default("")
   content String @default("")
   type    String @default("story-strategist")
 }

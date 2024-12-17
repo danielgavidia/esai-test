@@ -9,11 +9,10 @@ export const getCards = async (req: Request, res: Response) => {
 
 // POST card
 export const postCard = async (req: Request, res: Response) => {
-  const { title, content, type } = req.body;
+  const { content, type } = req.body;
 
   const card = await prisma.card.create({
     data: {
-      title,
       content,
       type,
     },
