@@ -1,5 +1,26 @@
+"use client";
+
+import { useConversations } from "@/hooks/hooks.conversations";
+import ConversationCard from "../x-components/conversations.card";
+
 const Page = () => {
-  return <div></div>;
+  const { conversations } = useConversations();
+
+  return (
+    <div>
+      <div>
+        {conversations &&
+          conversations.map((conv, i) => (
+            <ConversationCard
+              key={i}
+              title={conv.type}
+              type={conv.type}
+              date={new Date(conv.createdAt)}
+            />
+          ))}
+      </div>
+    </div>
+  );
 };
 
 export default Page;
