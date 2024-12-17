@@ -2,6 +2,7 @@
 
 import QuestionBlockNonInput from "@/app/x-components/tool.question-block-noninput";
 import { useConversations } from "@/hooks/hooks.conversations";
+import { robotoMono } from "@/lib/fonts";
 import { useParams } from "next/navigation";
 
 const Page = () => {
@@ -20,13 +21,13 @@ const Page = () => {
       {conversation && (
         <div className="max-w-[54rem]">
           <div className="flex flex-col justify-center items-center space-y-2">
-            <p className="font-bold text-lg">
+            <p className={`font-bold text-2xl ${robotoMono.className}`}>
               {conversation.type
                 .split("-")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(" ")}
             </p>
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-500 text-sm">
               {new Date(conversation.createdAt).toLocaleString([], {
                 year: "numeric",
                 month: "long",

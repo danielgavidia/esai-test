@@ -1,3 +1,4 @@
+import { robotoMono } from "@/lib/fonts";
 import { QuestionBlock } from "@/types/types";
 
 interface QuestionBlockNonInputProps {
@@ -7,7 +8,9 @@ interface QuestionBlockNonInputProps {
 const QuestionBlockNonInput = ({ questionBlock }: QuestionBlockNonInputProps) => {
   return (
     <div className="w-full flex flex-col space-y-4 p-4 bg-white shadow-md rounded-lg">
-      <div className="font-semibold text-lg text-gray-800">{questionBlock.title}</div>
+      <div className={`font-semibold text-lg text-gray-800 ${robotoMono.className}`}>
+        {questionBlock.title}
+      </div>
 
       <div className="text-sm text-gray-600">{questionBlock.description}</div>
 

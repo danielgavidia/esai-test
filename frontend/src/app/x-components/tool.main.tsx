@@ -6,6 +6,7 @@ import QuestionBlockCard from "./tool.question-block";
 import { apiPostAIPrompt, apiPostAIReprompt } from "@/api/api.ai";
 import OutputCard from "./tool.output-card";
 import { apiPostConversation } from "@/api/api.conversations";
+import { robotoMono } from "@/lib/fonts";
 
 export interface ToolMainProps {
   tool: Tool;
@@ -120,19 +121,26 @@ const ToolMain = ({ tool }: ToolMainProps) => {
   return (
     <div className="flex flex-col space-y-4 justify-center items-center bg-white rounded-2xl p-6 w-full">
       {/* Title */}
-      <div className="text-3xl text-center font-bold">{tool.title}</div>
+      <div
+        className={`text-3xl text-center font-extrabold text-gray-800 mb-4 ${robotoMono.className}`}
+      >
+        {tool.title}
+      </div>
 
       {/* Tags */}
-      <div className="flex space-x-2 justify-center">
+      <div className="flex flex-wrap justify-center space-x-2 mb-4">
         {tool.tags.map((tag, i) => (
-          <div key={i} className="rounded-2xl p-1 text-xs bg-sky-100 font-semibold">
+          <div
+            key={i}
+            className="rounded-full px-3 py-1 text-sm bg-blue-200 text-blue-800 font-medium shadow-sm"
+          >
             #{tag}
           </div>
         ))}
       </div>
 
       {/* Description */}
-      <div className="text-center font-semibold">{tool.description}</div>
+      <div className="text-center text-lg font-medium text-gray-600 mb-6">{tool.description}</div>
 
       {/* Step */}
       {step > 0 && !aiOutputBlocks && <p className="text-xs">Step {step} of 4</p>}
