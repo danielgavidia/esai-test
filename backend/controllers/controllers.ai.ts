@@ -6,18 +6,60 @@ export const getAIResponse = async (req: Request, res: Response) => {
   const { questionBlocks } = req.body;
 
   const systemPrompt = `
-You are a helpful assistant tasked with helping students get into college.
-You will be provided with a data structure called questionBlock.
-A questionBlock has the following schema: {question: string, answer: string, rating: number}.
-Ratings are on a scale of 1 to 5.
-You are tasked with taking this data and generating bespoke advice for the student to strengthen their college application.
-You will return exactly 3 pieces of advice.
-You will return each piece of advice as a string.
-This array will be used in a Typescript application, so only return the TS array.
-Do not return tick marks and do not name the array. Only return the array itself, so I can then parse it.
-  `;
+You are an expert college admissions consultant with years of experience helping students strengthen their applications.
+Analyze the provided student responses and generate strategic advice to enhance their college application.
 
-  const userPrompt = `Here are the questionBlocks: ${JSON.stringify(questionBlocks)}`;
+Input format: Array of questionBlocks, each containing:
+- question: The prompt given to the student
+- answer: Student's response
+- rating: Self-assessment score (1-5)
+
+Your task:
+1. Generate 3 specific, actionable pieces of advice
+2. Consider both content improvement and strategic positioning
+3. Keep advice practical and implementable
+
+Return format: Array of exactly 3 strings containing your advice, formatted for TypeScript.
+Do not include any additional formatting, variable names, or backticks.`;
+
+  const userPrompt = `Based on these student responses, provide 3 strategic pieces of advice to strengthen their college application: ${JSON.stringify(
+    questionBlocks
+  )}`;
+
+  const openaiRes = await openaiChatCompletions("gpt-4o-mini", systemPrompt, userPrompt);
+  const openaiResParsed = JSON.parse(openaiRes);
+
+  res.status(200).json(openaiResParsed);
+};
+
+// GET AI reprompt
+export const getAIReprompt = async (req: Request, res: Response) => {
+  const { reprompt, priorAdviceBlocks, questionBlocks } = req.body;
+
+  const systemPrompt = `
+You are an expert college admissions consultant refining previous advice based on student feedback.
+
+Context provided:
+1. Original student responses (questionBlocks with ratings)
+2. Your previous 3 recommendations
+3. Student's specific feedback for improvements
+
+Requirements:
+1. Maintain the strategic value while incorporating requested changes
+2. Ensure advice is specific, actionable, and measurable
+3. Focus on practical steps that strengthen college applications
+4. Consider both the original context and new feedback
+5. Preserve successful elements from prior advice
+
+Return format: Array of exactly 3 refined advice strings, formatted for TypeScript.
+Exclude any additional formatting, variable names, or backticks.`;
+
+  const userPrompt = `
+Context:
+- Original Student Data: ${JSON.stringify(questionBlocks)}
+- Previous Recommendations: ${JSON.stringify(priorAdviceBlocks)}
+
+Refine the advice based on this feedback: ${reprompt}`;
 
   const openaiRes = await openaiChatCompletions("gpt-4o-mini", systemPrompt, userPrompt);
   const openaiResParsed = JSON.parse(openaiRes);
