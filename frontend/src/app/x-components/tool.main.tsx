@@ -132,7 +132,7 @@ const ToolMain = ({ tool }: ToolMainProps) => {
       </div>
 
       {/* Description */}
-      {/* <div className="text-center font-semibold">{tool.description}</div> */}
+      <div className="text-center font-semibold">{tool.description}</div>
 
       {/* Step */}
       {step > 0 && !aiOutputBlocks && <p className="text-xs">Step {step} of 4</p>}
@@ -207,6 +207,11 @@ const ToolMain = ({ tool }: ToolMainProps) => {
                 saved={block.saved}
                 toolType={tool.type}
                 display={false}
+                setSaved={(saved) => {
+                  const newBlocks = [...aiOutputBlocks];
+                  newBlocks[i].saved = saved;
+                  setAIOutputBlocks(newBlocks);
+                }}
               />
             ))}
           </div>

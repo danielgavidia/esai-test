@@ -9,17 +9,26 @@ export interface OutputCardProps {
   toolType: string;
   display: boolean;
   createdAt?: Date;
+  setSaved: (saved: boolean) => void;
 }
 
-const OutputCard = ({ content, saved, toolType, display, createdAt }: OutputCardProps) => {
+const OutputCard = ({
+  content,
+  saved,
+  toolType,
+  display,
+  createdAt,
+  setSaved,
+}: OutputCardProps) => {
   const handleSave = async () => {
     await apiPostCard(content, toolType);
+    setSaved(true);
   };
 
   return (
     <div
       className={`p-2 border-[0.5px] rounded-lg text-sm flex justify-between ${
-        saved ? "bg-sky-100" : "bg-white"
+        saved ? "bg-green-100" : "bg-white"
       }`}
     >
       <div className="flex-1">
@@ -43,7 +52,6 @@ const OutputCard = ({ content, saved, toolType, display, createdAt }: OutputCard
           <Bookmark className="h-6" />
         </button>
       )}
-      <div>{saved}</div>
     </div>
   );
 };
