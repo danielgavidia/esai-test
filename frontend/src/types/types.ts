@@ -29,11 +29,5 @@ export interface Conversation {
   id: string;
   createdAt: string;
   type: string;
-  questionBlocks: ConversationQuestionBlock[];
-}
-
-export interface ConversationQuestionBlock extends QuestionBlock {
-  id: string;
-  createdAt: string;
-  conversationId: string;
+  questionBlocks: QuestionBlock[];
 }
