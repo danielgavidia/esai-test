@@ -1,13 +1,13 @@
 import axiosClient from "./api.axiosClient";
 
 // POST card
-export const apiPostCard = async (cardContent: string, cardType: string): Promise<void> => {
+export const apiPostCard = async (cardContent: string, toolType: string): Promise<void> => {
   const res = await axiosClient.request({
     method: "POST",
     url: "/cards",
     data: {
       content: cardContent,
-      type: cardType,
+      type: toolType,
     },
   });
   const data = res.data;

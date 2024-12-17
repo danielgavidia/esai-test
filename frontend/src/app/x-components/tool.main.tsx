@@ -176,7 +176,12 @@ const ToolMain = ({ tool }: ToolMainProps) => {
           </p>
           <div className="flex flex-col space-y-2">
             {aiOutputBlocks.map((block, i) => (
-              <OutputCard key={i} content={block.content} saved={block.saved} />
+              <OutputCard
+                key={i}
+                content={block.content}
+                saved={block.saved}
+                toolType={tool.type}
+              />
             ))}
           </div>
         </div>

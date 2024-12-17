@@ -2,6 +2,7 @@ import { Tool } from "@/types/types";
 
 export const tools: Tool[] = [
   {
+    type: "story-strategist",
     title: "Story Strategist",
     tags: ["gettingstarted", "yourstory"],
     description:
