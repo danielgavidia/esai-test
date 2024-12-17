@@ -13,6 +13,7 @@ const Page = () => {
           conversations.map((conv, i) => (
             <ConversationCard
               key={i}
+              id={conv.id}
               title={conv.type}
               type={conv.type}
               date={new Date(conv.createdAt)}
