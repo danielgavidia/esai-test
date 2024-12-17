@@ -7,13 +7,13 @@ export interface OutputCardProps {
   content: string;
   saved: boolean;
   toolType: string;
+  display: boolean;
+  createdAt?: Date;
 }
 
-const OutputCard = ({ content, saved, toolType }: OutputCardProps) => {
+const OutputCard = ({ content, saved, toolType, display, createdAt }: OutputCardProps) => {
   const handleSave = async () => {
-    console.log("started");
-    const res = await apiPostCard(content, toolType);
-    console.log(res);
+    await apiPostCard(content, toolType);
   };
 
   return (
@@ -22,10 +22,27 @@ const OutputCard = ({ content, saved, toolType }: OutputCardProps) => {
         saved ? "bg-sky-100" : "bg-white"
       }`}
     >
-      <div>{content}</div>
-      <button onClick={() => handleSave()} className="flex justify-end">
-        <Bookmark className="h-6" />
-      </button>
+      <div className="flex-1">
+        <div>
+          {display && (
+            <div className="flex space-x-2 items-center">
+              <p className="font-semibold">
+                {toolType
+                  .split("-")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ")}
+              </p>
+              <p className="text-xs italic">{createdAt?.toLocaleDateString()}</p>
+            </div>
+          )}
+        </div>
+        <p>{content}</p>
+      </div>
+      {!display && (
+        <button onClick={() => handleSave()} className="flex justify-end w-full max-w-10">
+          <Bookmark className="h-6" />
+        </button>
+      )}
       <div>{saved}</div>
     </div>
   );
