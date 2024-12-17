@@ -199,7 +199,7 @@ const ToolMain = ({ tool }: ToolMainProps) => {
         <div className="font-semibold text-lg">Supercharging your story...</div>
       )}
       {aiOutputBlocks && (
-        <div className="flex flex-col space-y-2 bg-gray-100 p-2 rounded-lg">
+        <div className="flex flex-col space-y-2 bg-gray-100 p-2 rounded-lg w-full">
           <p className="text-sm font-semibold">
             Based on your unique story, here are some suggested angles for how you could stand out
             and get in:
