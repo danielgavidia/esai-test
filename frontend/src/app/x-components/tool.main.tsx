@@ -112,9 +112,6 @@ const ToolMain = ({ tool }: ToolMainProps) => {
       setLoading(false);
       setAIOutputBlocks(res.map((output) => ({ content: output, saved: false })));
       setReprompt("");
-
-      // Save conversation
-      await apiPostConversation(tool.type, questionBlocks);
     }
   };
 
