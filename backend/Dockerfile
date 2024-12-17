@@ -26,4 +26,4 @@ COPY . ./
 RUN npx prisma generate
 
 # Run the prisma migrations and application
-CMD ["bun", "run", "--watch", "index.ts"]
+CMD ["npx", "prisma", "migrate", "deploy", "&&", "bun", "run", "--watch", "index.ts"]
