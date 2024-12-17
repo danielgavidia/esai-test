@@ -13,3 +13,10 @@ export interface QuestionBlock {
   answer: string;
   rating: number;
 }
+
+export interface Card {
+  id: string;
+  createdAt: string;
+  content: string;
+  type: string;
+}

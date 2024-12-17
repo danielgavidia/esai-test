@@ -181,6 +181,7 @@ const ToolMain = ({ tool }: ToolMainProps) => {
                 content={block.content}
                 saved={block.saved}
                 toolType={tool.type}
+                display={false}
               />
             ))}
           </div>
