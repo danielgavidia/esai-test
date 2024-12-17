@@ -3,6 +3,7 @@
 import { QuestionBlock, Tool } from "@/types/types";
 import { useState } from "react";
 import QuestionBlockCard from "./tool.question-block";
+import { apiGetAIResponse } from "@/api/api.ai";
 
 export interface ToolMainProps {
   tool: Tool;
@@ -53,6 +54,32 @@ const ToolMain = ({ tool }: ToolMainProps) => {
     setStep((prev) => prev + 1);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    console.log("started");
+    e.preventDefault();
+    setTextError(false);
+    setRatingError(false);
+
+    const currentBlocks = questionBlocks.filter((_, i) => stepMapping[step].includes(i));
+    const currentAnswers = currentBlocks.map((block) => block.answer);
+    const currentRatings = currentBlocks.map((block) => block.rating);
+
+    if (currentAnswers.includes("")) {
+      setTextError(true);
+      return;
+    }
+
+    if (currentRatings.includes(0)) {
+      setRatingError(true);
+      return;
+    }
+    setTextError(false);
+    setRatingError(false);
+
+    const res = await apiGetAIResponse(questionBlocks);
+    console.log(res);
+  };
+
   console.log(questionBlocks);
 
   return (
@@ -77,40 +104,52 @@ const ToolMain = ({ tool }: ToolMainProps) => {
 
       {/* Question blocks */}
       {step > 0 && (
-        <form className="flex flex-col space-y-6 p-3 rounded-2xl border-[1px]">
-          {questionBlocks.map((block, i) => {
-            if (stepMapping[step.toString()].includes(i)) {
-              return (
-                <QuestionBlockCard
-                  key={i}
-                  questionBlock={block}
-                  setRating={(rating) => {
-                    const newBlocks = [...questionBlocks];
-                    newBlocks[i].rating = rating;
-                    setQuestionBlocks(newBlocks);
-                  }}
-                  setAnswer={(answer) => {
-                    const newBlocks = [...questionBlocks];
-                    newBlocks[i].answer = answer;
-                    setQuestionBlocks(newBlocks);
-                  }}
-                />
-              );
-            }
-            return null;
-          })}
-          {textError && <p className="text-red-500 text-sm">Please provide answers</p>}
-          {ratingError && <p className="text-red-500 text-sm">Please provide ratings</p>}
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 items-center">
+          <div className="flex flex-col space-y-6 p-3 rounded-2xl border-[1px]">
+            {questionBlocks.map((block, i) => {
+              if (stepMapping[step.toString()].includes(i)) {
+                return (
+                  <QuestionBlockCard
+                    key={i}
+                    questionBlock={block}
+                    setRating={(rating) => {
+                      const newBlocks = [...questionBlocks];
+                      newBlocks[i].rating = rating;
+                      setQuestionBlocks(newBlocks);
+                    }}
+                    setAnswer={(answer) => {
+                      const newBlocks = [...questionBlocks];
+                      newBlocks[i].answer = answer;
+                      setQuestionBlocks(newBlocks);
+                    }}
+                  />
+                );
+              }
+              return null;
+            })}
+            {textError && <p className="text-red-500 text-sm">Please provide answers</p>}
+            {ratingError && <p className="text-red-500 text-sm">Please provide ratings</p>}
+          </div>
+
+          {/* Submit button */}
+          {step !== 4 ? (
+            <button
+              type="button"
+              onClick={() => handleNext()}
+              className="bg-yellow-200 w-24 text-center p-2 rounded-3xl border-2"
+            >
+              {stepMappingSubmit[step.toString()]}
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="bg-yellow-200 w-24 text-center p-2 rounded-3xl border-2"
+            >
+              {stepMappingSubmit[step.toString()]}
+            </button>
+          )}
         </form>
       )}
-
-      {/* Submit button */}
-      <button
-        onClick={() => handleNext()}
-        className="bg-yellow-200 w-24 text-center p-2 rounded-3xl border-2"
-      >
-        {stepMappingSubmit[step.toString()]}
-      </button>
     </div>
   );
 };
