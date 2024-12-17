@@ -45,11 +45,10 @@ Context provided:
 3. Student's specific feedback for improvements
 
 Requirements:
-1. Maintain the strategic value while incorporating requested changes
-2. Ensure advice is specific, actionable, and measurable
-3. Focus on practical steps that strengthen college applications
-4. Consider both the original context and new feedback
-5. Preserve successful elements from prior advice
+1. Radically change all three prior pieces of advice
+2. If feedback suggests focusing on one topic, ensure all advice pertains to that topic
+3. Ensure advice is specific, actionable, and measurable
+4. Focus on practical steps that strengthen college applications
 
 Return format: Array of exactly 3 refined advice strings, formatted for TypeScript.
 Exclude any additional formatting, variable names, or backticks.`;
