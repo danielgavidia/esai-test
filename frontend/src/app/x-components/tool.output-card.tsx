@@ -3,6 +3,7 @@
 import { apiPostCard } from "@/api/api.cards";
 import { robotoMono } from "@/lib/fonts";
 import { Bookmark } from "lucide-react";
+import CopyToClipboardButton from "./misc.clipboard-button";
 
 export interface OutputCardProps {
   content: string;
@@ -32,8 +33,8 @@ const OutputCard = ({
     >
       <div className="flex-1 space-y-2">
         {display && (
-          <div className="flex justify-between items-center pb-2 border-b border-gray-100">
-            <p className={`font-semibold ${robotoMono.className} text-gray-800`}>
+          <div className="flex justify-between items-center pb-2 border-b border-gray-100 space-x-2">
+            <p className={`flex-1 font-semibold ${robotoMono.className} text-gray-800`}>
               {toolType
                 .split("-")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -43,6 +44,7 @@ const OutputCard = ({
               {createdAt?.toLocaleDateString()}{" "}
               {createdAt?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
             </p>
+            {display && <CopyToClipboardButton textToCopy={content} />}
           </div>
         )}
         <p className="text-gray-600 leading-relaxed">{content}</p>
