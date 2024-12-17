@@ -1,10 +1,11 @@
 // Tool
 export interface Tool {
-  type: "story-strategist" | "school-match-maker";
+  type: "story-strategist" | "school-matchmaker" | "major-mentor";
   title: string;
   tags: string[];
   description: string;
   questionBlocks: QuestionBlock[];
+  isFree: boolean;
 }
 
 // Question Block

@@ -5,6 +5,7 @@ export const tools: Tool[] = [
     type: "story-strategist",
     title: "Story Strategist",
     tags: ["gettingstarted", "yourstory"],
+    isFree: true,
     description:
       "Uncover unique themes and make unlikely connections across your story to package your most effective college application narrative.",
     questionBlocks: [
@@ -68,6 +69,44 @@ export const tools: Tool[] = [
           "Think about something that sets you apart from your friends or classmates — maybe it's a special upbringing, a unique hobby or interest you're passionate about, a cause you care deeply about, or a future goal that defines who you are.",
         placeholder:
           "example: One thing that makes me unique is my passion for robotics. While others enjoy sports or music, I love designing and programming robots.",
+        rating: 0,
+        answer: "",
+      },
+    ],
+  },
+  {
+    title: "School Match Maker",
+    type: "school-matchmaker",
+    tags: ["gettingstarted", "perfectmatch"],
+    description:
+      "Find the best schools and programs for you based on your strengths, goals, and budget.",
+    isFree: true,
+    questionBlocks: [
+      {
+        title: "Tell us about your values",
+        description:
+          "A value is something that you believe is really important in life. Share three values that matter most to you — such as courage, belonging, or your connection to nature.",
+        placeholder:
+          "example: I’ve always cared deeply about animal rights and caring for all creatures big and small.",
+        rating: 0,
+        answer: "",
+      },
+    ],
+  },
+  {
+    title: "Major Mentor",
+    type: "major-mentor",
+    tags: ["perfectmatch", "gettingstarted"],
+    description:
+      "Discover the best majors for you! Align your interests, strengths, and goals to find a future that fits.",
+    isFree: true,
+    questionBlocks: [
+      {
+        title: "Tell us about your values",
+        description:
+          "A value is something that you believe is really important in life. Share three values that matter most to you — such as courage, belonging, or your connection to nature.",
+        placeholder:
+          "example: I’ve always cared deeply about animal rights and caring for all creatures big and small.",
         rating: 0,
         answer: "",
       },

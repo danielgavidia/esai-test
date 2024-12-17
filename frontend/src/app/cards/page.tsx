@@ -7,9 +7,9 @@ const Page = () => {
   const { cards } = useCards();
 
   return (
-    <div className="flex flex-col space-y-6">
-      <p className="font-bold text-xl">Your Bookmarked ESAI Cards</p>
-      <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-6 p-4 items-center w-full">
+      <p className="font-bold text-xl text-left w-full">Your Bookmarked ESAI Cards</p>
+      <div className="flex flex-col space-y-4 max-w-[54rem] p-2 rounded border-[1px]">
         {cards &&
           cards.map((card, i) => (
             <OutputCard
