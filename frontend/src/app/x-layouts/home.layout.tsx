@@ -8,7 +8,7 @@ const GlobalLayout = ({ children }: { children: React.ReactNode }) => {
     <SidebarProvider>
       <div className="h-full w-full flex">
         <GlobalSidebar />
-        <main className="flex-1 p-4 overflow-y-auto">{children}</main>
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </SidebarProvider>
   );

@@ -17,13 +17,13 @@ const ToolCard = ({ title, image, tags, description, isFree, route }: ToolCardPr
   return (
     <button
       onClick={route ? () => router.push(route) : undefined}
-      className="border-[0.5px] rounded-2xl p-4 flex flex-col space-y-2"
+      className="border-[0.5px] rounded-2xl p-4 flex flex-col space-y-2 bg-white max-h-48"
     >
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 w-full">
         <img src={image} alt="tool-icon" className="h-14 bg-gray-100 p-1 rounded" />
-        <p className="font-semibold flex-1">{title}</p>
+        <p className="text-left font-semibold flex-1">{title}</p>
         {isFree && (
-          <div className="rounded bg-yellow-200 rounded-xl text-xs h-6 p-1 flex items-center border-[0.5px]">
+          <div className="rounded bg-yellow-200 rounded-xl text-xs h-6 p-1 flex items-center border-[0.5px] ml-auto">
             <p>Free</p>
           </div>
         )}
