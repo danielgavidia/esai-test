@@ -1,7 +1,8 @@
 import { QuestionBlock } from "@/types/types";
 import axiosClient from "./api.axiosClient";
 
-export const apiGetAIResponse = async (questionBlocks: QuestionBlock[]): Promise<void> => {
+export const apiGetAIResponse = async (questionBlocks: QuestionBlock[]) => {
+  console.log("started");
   const res = await axiosClient.request({
     method: "POST",
     url: "/ai",
@@ -11,5 +12,5 @@ export const apiGetAIResponse = async (questionBlocks: QuestionBlock[]): Promise
   });
   const data = res.data;
   console.log(data);
-  return;
+  return data;
 };
