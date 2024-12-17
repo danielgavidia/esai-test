@@ -16,3 +16,31 @@ model Card {
   content String @default("")
   type    String @default("story-strategist")
 }
+
+model Conversation {
+  // Defaults
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  // Fields
+  type String @default("story-strategist")
+
+  // Relationships
+  questionBlocks QuestionBlock[]
+}
+
+model QuestionBlock {
+  // Defaults
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  // Fields
+  title       String @default("")
+  description String @default("")
+  answer      String @default("")
+  rating      Int    @default(0)
+
+  // Relationships
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+}

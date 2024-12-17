@@ -5,6 +5,7 @@ import { useState } from "react";
 import QuestionBlockCard from "./tool.question-block";
 import { apiPostAIPrompt, apiPostAIReprompt } from "@/api/api.ai";
 import OutputCard from "./tool.output-card";
+import { apiPostConversation } from "@/api/api.conversations";
 
 export interface ToolMainProps {
   tool: Tool;
@@ -91,6 +92,9 @@ const ToolMain = ({ tool }: ToolMainProps) => {
     const res: string[] = await apiPostAIPrompt(questionBlocks);
     setLoading(false);
     setAIOutputBlocks(res.map((output) => ({ content: output, saved: false })));
+
+    // Save conversation
+    await apiPostConversation(tool.type, questionBlocks);
   };
 
   // Handle submit follow up
@@ -107,6 +111,9 @@ const ToolMain = ({ tool }: ToolMainProps) => {
       setLoading(false);
       setAIOutputBlocks(res.map((output) => ({ content: output, saved: false })));
       setReprompt("");
+
+      // Save conversation
+      await apiPostConversation(tool.type, questionBlocks);
     }
   };
 
