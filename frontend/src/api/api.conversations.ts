@@ -1,10 +1,10 @@
-import { Conversation, ConversationQuestionBlock } from "@/types/types";
+import { Conversation, QuestionBlock } from "@/types/types";
 import axiosClient from "./api.axiosClient";
 
 // POST conversation
 export const apiPostConversation = async (
   toolType: string,
-  questionBlocks: ConversationQuestionBlock[]
+  questionBlocks: QuestionBlock[]
 ): Promise<void> => {
   const res = await axiosClient.request({
     method: "POST",
