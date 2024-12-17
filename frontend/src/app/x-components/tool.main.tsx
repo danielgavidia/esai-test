@@ -6,6 +6,7 @@ import QuestionBlockCard from "./tool.question-block";
 import { apiPostAIPrompt, apiPostAIReprompt } from "@/api/api.ai";
 import OutputCard from "./tool.output-card";
 import { apiPostConversation } from "@/api/api.conversations";
+import { robotoMono } from "@/lib/fonts";
 
 export interface ToolMainProps {
   tool: Tool;
@@ -13,7 +14,7 @@ export interface ToolMainProps {
 
 const ToolMain = ({ tool }: ToolMainProps) => {
   // State
-  const [questionBlocks, setQuestionBlocks] = useState<QuestionBlock[]>(tool.questionBlocks);
+  const [questionBlocks, setQuestionBlocks] = useState<QuestionBlock[]>(tool?.questionBlocks || []);
   const [step, setStep] = useState<number>(0);
   const [textError, setTextError] = useState<boolean>(false);
   const [ratingError, setRatingError] = useState<boolean>(false);
@@ -118,29 +119,36 @@ const ToolMain = ({ tool }: ToolMainProps) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col space-y-4 justify-center items-center">
+    <div className="flex flex-col space-y-4 justify-center items-center bg-white rounded-2xl p-6 w-full">
       {/* Title */}
-      <div className="text-3xl text-center font-bold">{tool.title}</div>
+      <div
+        className={`text-3xl text-center font-extrabold text-gray-800 mb-4 ${robotoMono.className}`}
+      >
+        {tool.title}
+      </div>
 
       {/* Tags */}
-      <div className="flex space-x-2 justify-center">
+      <div className="flex flex-wrap justify-center space-x-2 mb-4">
         {tool.tags.map((tag, i) => (
-          <div key={i} className="rounded-2xl p-1 text-xs bg-gray-100">
+          <div
+            key={i}
+            className="rounded-full px-3 py-1 text-sm bg-blue-200 text-blue-800 font-medium shadow-sm"
+          >
             #{tag}
           </div>
         ))}
       </div>
 
       {/* Description */}
-      <div className="text-center font-semibold">{tool.description}</div>
+      <div className="text-center text-lg font-medium text-gray-600 mb-6">{tool.description}</div>
 
       {/* Step */}
       {step > 0 && !aiOutputBlocks && <p className="text-xs">Step {step} of 4</p>}
 
       {/* Question blocks */}
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4 items-center">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-4 items-center w-full">
         {step > 0 && !aiOutputBlocks && (
-          <div className="flex flex-col space-y-6 p-3 rounded-2xl border-[1px]">
+          <div className="flex flex-col space-y-6 p-3 rounded-2xl border-[1px] w-full">
             {questionBlocks.map((block, i) => {
               if (stepMapping[step.toString()].includes(i)) {
                 return (
@@ -207,6 +215,11 @@ const ToolMain = ({ tool }: ToolMainProps) => {
                 saved={block.saved}
                 toolType={tool.type}
                 display={false}
+                setSaved={(saved) => {
+                  const newBlocks = [...aiOutputBlocks];
+                  newBlocks[i].saved = saved;
+                  setAIOutputBlocks(newBlocks);
+                }}
               />
             ))}
           </div>
@@ -232,7 +245,7 @@ const ToolMain = ({ tool }: ToolMainProps) => {
             value={reprompt}
             onChange={(e) => setReprompt(e.target.value)}
             placeholder="Follow-up instructions..."
-            className="border-[1px] rounded-xl text-xs w-full p-2"
+            className="border-[1px] rounded-xl text-xs w-full p-2 resize-none"
           />
           <button type="submit" className="bg-yellow-200 text-center p-2 rounded-3xl border-2">
             Submit Follow-Up
