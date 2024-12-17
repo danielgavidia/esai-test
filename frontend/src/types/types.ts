@@ -1,3 +1,4 @@
+// Tool
 export interface Tool {
   type: "story-strategist" | "school-match-maker";
   title: string;
@@ -6,6 +7,7 @@ export interface Tool {
   questionBlocks: QuestionBlock[];
 }
 
+// Question Block
 export interface QuestionBlock {
   title: string;
   description: string;
@@ -14,9 +16,24 @@ export interface QuestionBlock {
   rating: number;
 }
 
+// Card
 export interface Card {
   id: string;
   createdAt: string;
   content: string;
   type: string;
+}
+
+// Conversation
+export interface Conversation {
+  id: string;
+  createdAt: string;
+  type: string;
+  questionBlocks: ConversationQuestionBlock[];
+}
+
+export interface ConversationQuestionBlock extends QuestionBlock {
+  id: string;
+  createdAt: string;
+  conversationId: string;
 }

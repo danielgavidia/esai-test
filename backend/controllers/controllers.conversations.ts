@@ -3,7 +3,11 @@ import prisma from "../prisma/prisma";
 
 // GET conversations
 export const getConversations = async (req: Request, res: Response) => {
-  const conversations = await prisma.conversation.findMany();
+  const conversations = await prisma.conversation.findMany({
+    include: {
+      questionBlocks: true,
+    },
+  });
   res.status(200).json(conversations);
 };
 
