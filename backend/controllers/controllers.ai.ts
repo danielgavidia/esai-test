@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import { openaiChatCompletions } from "../utils/openai";
 
-// GET AI response
-export const getAIResponse = async (req: Request, res: Response) => {
+// POST AI prompt
+export const getAIPrompt = async (req: Request, res: Response) => {
   const { questionBlocks } = req.body;
 
   const systemPrompt = `
@@ -32,7 +32,7 @@ Do not include any additional formatting, variable names, or backticks.`;
   res.status(200).json(openaiResParsed);
 };
 
-// GET AI reprompt
+// POST AI reprompt
 export const getAIReprompt = async (req: Request, res: Response) => {
   const { reprompt, priorAdviceBlocks, questionBlocks } = req.body;
 

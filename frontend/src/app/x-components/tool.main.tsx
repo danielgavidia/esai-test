@@ -3,7 +3,7 @@
 import { QuestionBlock, Tool } from "@/types/types";
 import { useState } from "react";
 import QuestionBlockCard from "./tool.question-block";
-import { apiGetAIResponse } from "@/api/api.ai";
+import { apiPostAIPrompt, apiPostAIReprompt } from "@/api/api.ai";
 import OutputCard from "./tool.output-card";
 
 export interface ToolMainProps {
@@ -20,6 +20,7 @@ const ToolMain = ({ tool }: ToolMainProps) => {
     { content: string; saved: boolean }[] | null
   >(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [reprompt, setReprompt] = useState<string>("");
 
   // Mappings
   const stepMapping: Record<string, number[]> = {
@@ -87,12 +88,27 @@ const ToolMain = ({ tool }: ToolMainProps) => {
     setTextError(false);
     setRatingError(false);
 
-    const res: string[] = await apiGetAIResponse(questionBlocks);
+    const res: string[] = await apiPostAIPrompt(questionBlocks);
     setLoading(false);
     setAIOutputBlocks(res.map((output) => ({ content: output, saved: false })));
   };
 
-  console.log(questionBlocks);
+  // Handle submit follow up
+  const handleSubmitFollowUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (aiOutputBlocks) {
+      setLoading(true);
+      const res: string[] = await apiPostAIReprompt(
+        reprompt,
+        aiOutputBlocks.map((b) => b.content),
+        questionBlocks
+      );
+      setLoading(false);
+      setAIOutputBlocks(res.map((output) => ({ content: output, saved: false })));
+      setReprompt("");
+    }
+  };
 
   return (
     <div className="w-full h-full flex flex-col space-y-4 justify-center items-center">
@@ -112,12 +128,11 @@ const ToolMain = ({ tool }: ToolMainProps) => {
       <div className="text-center font-semibold">{tool.description}</div>
 
       {/* Step */}
-      {step > 0 && <p className="text-xs">Step {step} of 4</p>}
+      {step > 0 && !aiOutputBlocks && <p className="text-xs">Step {step} of 4</p>}
 
       {/* Question blocks */}
-
       <form onSubmit={handleSubmit} className="flex flex-col space-y-4 items-center">
-        {step > 0 && (
+        {step > 0 && !aiOutputBlocks && (
           <div className="flex flex-col space-y-6 p-3 rounded-2xl border-[1px]">
             {questionBlocks.map((block, i) => {
               if (stepMapping[step.toString()].includes(i)) {
@@ -147,7 +162,7 @@ const ToolMain = ({ tool }: ToolMainProps) => {
         {ratingError && <p className="text-red-500 text-sm">Please provide ratings</p>}
 
         {/* Submit button */}
-        {step !== 4 ? (
+        {step !== 4 && !aiOutputBlocks && (
           <button
             type="button"
             onClick={() => handleNext()}
@@ -155,7 +170,8 @@ const ToolMain = ({ tool }: ToolMainProps) => {
           >
             {stepMappingSubmit[step.toString()]}
           </button>
-        ) : (
+        )}
+        {step === 4 && !aiOutputBlocks && (
           <button
             type="button"
             onClick={handleSubmit}
@@ -167,7 +183,9 @@ const ToolMain = ({ tool }: ToolMainProps) => {
       </form>
 
       {/* AI output blocks */}
-      {loading && <div className="font-semibold text-lg">Supercharging your story...</div>}
+      {loading && !aiOutputBlocks && (
+        <div className="font-semibold text-lg">Supercharging your story...</div>
+      )}
       {aiOutputBlocks && (
         <div className="flex flex-col space-y-2 bg-gray-100 p-2 rounded-lg">
           <p className="text-sm font-semibold">
@@ -186,6 +204,33 @@ const ToolMain = ({ tool }: ToolMainProps) => {
             ))}
           </div>
         </div>
+      )}
+
+      {/* Reprompt loading */}
+      {loading && aiOutputBlocks && (
+        <div className="font-semibold text-lg">Tweaking your story...</div>
+      )}
+
+      {/* Reprompt */}
+      {aiOutputBlocks && (
+        <form
+          onSubmit={handleSubmitFollowUp}
+          className="flex flex-col space-y-2 bg-gray-100 p-2 rounded-lg w-full items-center"
+        >
+          <p className="text-left w-full font-semibold text-lg">
+            Would you like to tweak these responses?
+          </p>
+          <p className="text-left w-full text-sm">Please provide follow-up instructions:</p>
+          <textarea
+            value={reprompt}
+            onChange={(e) => setReprompt(e.target.value)}
+            placeholder="Follow-up instructions..."
+            className="border-[1px] rounded-xl text-xs w-full p-2"
+          />
+          <button type="submit" className="bg-yellow-200 text-center p-2 rounded-3xl border-2">
+            Submit Follow-Up
+          </button>
+        </form>
       )}
     </div>
   );

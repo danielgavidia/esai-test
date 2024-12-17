@@ -1,9 +1,9 @@
 import express from "express";
-import { getAIResponse } from "../controllers/controllers.ai";
+import { getAIPrompt } from "../controllers/controllers.ai";
 
 const router = express.Router();
 
-router.post("/", getAIResponse);
-router.post("/reprompt", getAIResponse);
+router.post("/", getAIPrompt);
+router.post("/reprompt", getAIPrompt);
 
 export default router;
