@@ -1,7 +1,7 @@
 "use client";
 
 import { SidebarProvider } from "@/components/ui/sidebar";
-import GlobalSidebar from "../x-components/general.sidebar";
+import GlobalSidebar from "../x-components/home.sidebar";
 
 const GlobalLayout = ({ children }: { children: React.ReactNode }) => {
   return (
